@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>MLBB BRL Coin Table Calculator</title>
+
+<style>
+body{
+    font-family: Arial;
+    background:#e8ebf2;
+    padding:10px;
+    font-size:13px;
+}
+.container{
+    max-width:500px;
+    margin:auto;
+}
+.header{
+    background:linear-gradient(90deg,#2d6cdf,#20bf6b);
+    color:white;
+    padding:12px;
+    text-align:center;
+    border-radius:6px;
+    margin-bottom:10px;
+    font-weight:bold;
+}
+
+/* theme */
+.theme button{
+    padding:6px 10px;
+    margin:3px;
+    border:none;
+    border-radius:6px;
+    color:white;
+    cursor:pointer;
+}
+.blue{background:#2d6cdf;}
+.pink{background:#ff66b3;}
+.green{background:#00aa66;}
+.red{background:#ff5c5c;}
+
+h2{font-size:16px;color:#2d6cdf;}
+
+label{
+    font-weight:bold;
+    margin-top:6px;
+    display:block;
+}
+
+input,select{
+    width:100%;
+    padding:6px;
+    margin-top:4px;
+    border-radius:5px;
+    border:1px solid #999;
+}
+
+/* table */
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:10px;
+    background:white;
+    font-size:12px;
+}
+th{
+    background:#2d6cdf;
+    color:white;
+}
+td,th{
+    border:1px solid #888;
+    padding:4px;
+    text-align:center;
+}
+tr:nth-child(even){background:#f2f2f2;}
+.section{
+    background:green;
+    color:white;
+    font-weight:bold;
+}
+
+/* buttons */
+.big-btn{
+    width:100%;
+    padding:8px;
+    border-radius:6px;
+    margin-top:6px;
+    text-decoration:none;
+    display:block;
+    text-align:center;
+    color:white;
+}
+.purple{background:#7b2cff;}
+.blue2{background:#2d6cdf;}
+.green2{background:#20bf6b;}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="header">
+🎮 HN Game Shop မှဝန်ဆောင်မှုပေးသည်
+</div>
+
+<div class="theme">
+<button class="blue" onclick="setTheme('#eaf3ff')">💙 Blue</button>
+<button class="pink" onclick="setTheme('#ffe6f0')">🌸 Sakura</button>
+<button class="green" onclick="setTheme('#e6fff2')">🌿 Mint</button>
+<button class="red" onclick="setTheme('#ffe6e6')">❤️ Peach</button>
+</div>
+
+<h2>💰 MLBB BRL Coin Table Calculator</h2>
+
+<label>ကုန်သွယ်သည့် Smile code ထည့်ပါ:</label>
+<input type="number" id="price" placeholder="ဥပမာ - 7****">
+
+<label>အမြတ် % ရွေးပါ:</label>
+<select id="percent"></select>
+
+<table id="table"></table>
+
+<!-- Telegram Account -->
+<a href="https://t.me/Hanastore36" target="_blank" class="big-btn purple">
+💬 ဆက်သွယ်ရန် @Hanastore36
+</a>
+
+<!-- Channel + Website -->
+<div style="display:flex; gap:8px;">
+<a href="https://t.me/HN_Gameshop" target="_blank" class="big-btn blue2" style="flex:1;">
+📢 Channel Join
+</a>
+
+<a href="https://hngameshop.com" target="_blank" class="big-btn green2" style="flex:1;">
+💎 Diamond ဝယ်ရန်
+</a>
+</div>
+
+</div>
+
+<script>
+
+/* theme */
+function setTheme(color){
+    document.body.style.background=color;
+}
+
+/* percent auto */
+let percentSelect=document.getElementById("percent");
+for(let i=0;i<=20;i+=0.5){
+    let opt=document.createElement("option");
+    opt.value=i;
+    opt.text=i+"%";
+    percentSelect.appendChild(opt);
+}
+percentSelect.value=0;
+
+/* data */
+let plans=[
+["Weekly Pass","",76],
+["Twilight Pass","",402.5],
+["86","78+8",61.5],
+["172","156+16",122],
+["257","234+23",177.5],
+["343","257+86",239],
+["429","257+172",299.5],
+["514","257+257",355],
+["600","514+86",416.5],
+["706","625+81",480],
+["878","706+172",602],
+["963","706+257",657.5],
+["1049","706+343",719],
+["1135","706+429",779.5],
+["1412","706+706",960],
+["2195","1860+335",1453],
+["2901","2195+706",1933],
+["3688","3099+589",2424],
+["5532","4649+883",3660],
+["9288","7740+1548",6079],
+];
+
+let extra=[
+["50+","",39],
+["150+","",116.9],
+["250+","",187.5],
+["500+","",385],
+];
+
+/* auto table */
+function updateTable(){
+
+let price=document.getElementById("price").value || 0;
+let percent=document.getElementById("percent").value || 0;
+let table=document.getElementById("table");
+
+table.innerHTML=`<tr>
+<th>No</th><th>Dia Plan</th><th>Org Dia Plan</th>
+<th>Coin</th><th>MMK</th><th>Profit</th><th>Total</th>
+</tr>`;
+
+plans.forEach((p,i)=>{
+let mmk=p[2]*price/1000;
+let profit=mmk*percent/100;
+let total=mmk+profit;
+
+table.innerHTML+=`
+<tr>
+<td>${i+1}</td>
+<td>${p[0]}</td>
+<td>${p[1]}</td>
+<td>${p[2]}</td>
+<td>${mmk.toFixed(2)}</td>
+<td>${profit.toFixed(2)}</td>
+<td>${total.toFixed(2)}</td>
+</tr>`;
+});
+
+table.innerHTML+=`<tr class="section"><td colspan="7">Double Dia Plan</td></tr>`;
+
+extra.forEach((p,i)=>{
+let mmk=p[2]*price/1000;
+let profit=mmk*percent/100;
+let total=mmk+profit;
+
+table.innerHTML+=`
+<tr>
+<td>${plans.length+i+1}</td>
+<td>${p[0]}</td>
+<td>${p[1]}</td>
+<td>${p[2]}</td>
+<td>${mmk.toFixed(2)}</td>
+<td>${profit.toFixed(2)}</td>
+<td>${total.toFixed(2)}</td>
+</tr>`;
+});
+
+}
+
+/* auto event */
+document.getElementById("price").addEventListener("input", updateTable);
+document.getElementById("percent").addEventListener("change", updateTable);
+
+/* first load */
+updateTable();
+
+</script>
+
+</body>
+</html>
